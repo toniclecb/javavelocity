@@ -1,0 +1,43 @@
+package ${packagename};
+
+import java.io.Serializable;
+#foreach( $import in $imports)
+import $import;
+#end 
+
+public class ${className} implements Serializable {
+
+ 	/** Serial Version UID. */
+ #if($serialVersionUID == "null")
+ 	private static final long serialVersionUID = 1L;
+ #else
+ 	private static final long serialVersionUID = ${serialVersionUID}L;
+ #end
+
+#foreach( $field in $fields )
+	private $field.fieldType $field.fieldName;
+#end 
+
+#if($constructorEmpty)
+	public ${className}(){
+	}
+#end
+
+#if($constructorFull)
+	public ${className}($listFields){
+#foreach( $field in $fields )
+		this.${field.fieldName} = ${field.fieldName};
+#end
+	}
+#end
+
+#foreach( $field in $fields )
+	public ${field.fieldType} get${field.getFieldNameCapitalize()}() {
+		return this.${field.fieldName};
+	}
+ 
+	public void set${field.getFieldNameCapitalize()}(${field.fieldType} ${field.fieldName}) {
+		this.${field.fieldName} = ${field.fieldName};
+	} 
+#end
+}
